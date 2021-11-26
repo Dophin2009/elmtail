@@ -1,5 +1,9 @@
 TERRAFORM ?= terraform
 
+.PHONY: init
+init:
+	$(TERRAFORM) init
+
 .PHONY: apply
 apply: lint
 	$(TERRAFORM) apply
