@@ -1,4 +1,7 @@
+VARS ?= homelab.tfvars
+
 TERRAFORM ?= terraform
+TAPPLYFLAGS += -var-file=$(VARS)
 
 .PHONY: init
 init:
@@ -6,11 +9,11 @@ init:
 
 .PHONY: apply
 apply: lint
-	$(TERRAFORM) apply
+	$(TERRAFORM) apply $(TAPPLYFLAGS)
 
 .PHONY: plan
 plan: lint
-	$(TERRAFORM) plan
+	$(TERRAFORM) plan $(TAPPLYFLAGS)
 
 .PHONY: lint
 lint:
