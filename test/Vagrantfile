@@ -1,0 +1,29 @@
+# vim:ft=ruby
+
+begin
+  NODE_COUNT = Integer(ENV["VAGRANT_NODE_COUNT"])
+rescue
+  NODE_COUNT = 1
+end
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/ubuntu2004"
+  config.vm.network "private_network", type: "dhcp"
+
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.memory = 512
+    libvirt.cpus = 1
+  end
+
+  config.vm.provider :virtualbox do |virtualbox|
+    virtualbox.gui = false
+
+    virtualbox.memory = 512
+    virtualbox.cpu = 1
+  end
+
+  for i in 0..(NODE_COUNT - 1) do
+    name = "node#{i}"
+    config.vm.define name
+  end
+end
