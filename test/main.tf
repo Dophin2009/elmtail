@@ -10,8 +10,13 @@ resource "vagrant_vm" "cluster" {
   }
 }
 
-output "cluster_hosts" {
-  value = [
-    for machine in vagrant_vm.cluster.ssh_config : machine.host
-  ]
+module "cluster_provision" {
+  source    = "../modules/provision"
+  namespace = "provision"
+
+  hosts = {
+    for machine in vagrant_vm.cluster.ssh_config : "cluster" => [{
+      hostname = machine.host
+    }]
+  }
 }
