@@ -1,6 +1,0 @@
-%{ for group, hosts in hosts ~}
-[${group}]
-%{ for host in hosts ~}
-${host.hostname}
-%{ endfor ~}
-%{ endfor ~}
