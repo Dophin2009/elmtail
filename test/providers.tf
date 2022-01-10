@@ -1,4 +1,5 @@
 terraform {
+  backend "local" { path = "./.terraform/state/terraform.tfstate" }
   required_providers {
     vagrant = {
       source  = "bmatcuk/vagrant"
