@@ -1,5 +1,5 @@
 locals {
-  nodes = 3
+  nodes = 1
 }
 
 resource "vagrant_vm" "cluster" {
@@ -11,7 +11,7 @@ resource "vagrant_vm" "cluster" {
 }
 
 module "cluster_provision" {
-  source    = "../modules/provision"
+  source    = "../provision"
   namespace = "provision"
 
   hosts = {

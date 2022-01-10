@@ -1,5 +1,5 @@
 module "inventory_file" {
-  source = "../tmpfile"
+  source = "../modules/tmpfile"
 
   namespace       = var.namespace
   filename        = "inventory"
