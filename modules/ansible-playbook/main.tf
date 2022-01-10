@@ -9,21 +9,17 @@ locals {
   }
 }
 
-module "inventory_file" {
-  source = "../modules/tmpfile"
+module "inventory" {
+  source = "../tmpfile"
 
   namespace       = var.namespace
   filename        = "inventory.yaml"
   file_permission = "0644"
-  content = yamlencode({
-    all = {
-      children = local.children
-    }
-  })
+  content         = yamlencode(local.children)
 }
 
-# resource "null_resource" "playbook" {
-# provisioner "local-exec" {
-# command = "ansible -i ${module.inventory_file.filename}"
-# }
-# }
+resource "null_resource" "playbooks" {
+  provisioner "local-exec" {
+    command = "ansible-playbook -i ${abspath(module.inventory.filename)} ${var.playbook}"
+  }
+}
