@@ -5,8 +5,6 @@ TESTDIR ?= test
 TERRAFORM ?= terraform
 TAPPLYFLAGS += -var-file=$(VARS)
 
-HADOLINT ?= $(shell command -v hadolint 2> /dev/null)
-
 .PHONY: init
 init	:
 	$(TERRAFORM) init
@@ -36,9 +34,6 @@ test-init :
 test-lint :
 	$(TERRAFORM) -chdir=$(TESTDIR) validate
 	$(TERRAFORM) -chdir=$(TESTDIR) fmt -recursive .
-ifdef HADOLINT
-	hadolint $(TESTDIR)/Dockerfile
-endif
 
 .PHONY : test-plan
 test-plan : test-lint
