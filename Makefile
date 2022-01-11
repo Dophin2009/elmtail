@@ -58,6 +58,6 @@ lefthook-init :
 lefthook-run : lefthook-init
 	$(LEFTHOOK) run pre-commit
 
-.PHONY 	 : leakcheck
-leakchec :
-	$(LEAKCHECK) detect
+.PHONY 	 	: leakcheck
+leakcheck :
+	$(GITLEAKS) detect
