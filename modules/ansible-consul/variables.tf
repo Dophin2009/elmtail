@@ -13,5 +13,5 @@ variable "hosts" {
 
 variable "vars" {
   description = "Variables to be used in the inventory file."
-  type = map(any)
+  type        = map(any)
 }
