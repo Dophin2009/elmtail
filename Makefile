@@ -5,6 +5,9 @@ TESTDIR ?= test
 TERRAFORM ?= terraform
 TAPPLYFLAGS += -var-file=$(VARS)
 
+LEFTHOOK ?= lefthook
+GITLEAKS ?= gitleaks
+
 .PHONY: init
 init	:
 	$(TERRAFORM) init
@@ -46,3 +49,15 @@ test-apply : test-lint
 .PHONY : test-destroy
 test-destroy : test-lint
 	$(TERRAFORM) -chdir=$(TESTDIR) destroy
+
+.PHONY 			  : lefthook-init
+lefthook-init :
+	$(LEFTHOOK) install
+
+.PHONY 			 : lefthook-run
+lefthook-run : lefthook-init
+	$(LEFTHOOK) run pre-commit
+
+.PHONY 	 : leakcheck
+leakchec :
+	$(LEAKCHECK) detect
