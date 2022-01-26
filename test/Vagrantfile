@@ -1,10 +1,6 @@
 # vim:ft=ruby
 
-begin
-  NODE_COUNT = Integer(ENV["VAGRANT_NODE_COUNT"])
-rescue
-  NODE_COUNT = 1
-end
+require './util.rb'
 
 Vagrant.configure("2") do |config|
   config.vm.box = "generic/ubuntu2004"
