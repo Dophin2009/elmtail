@@ -1,6 +1,6 @@
 # vim:ft=ruby
+require_relative 'lib/util'
 
-require './util.rb'
 
 Vagrant.configure("2") do |config|
   config.vm.box = "generic/ubuntu2004"
