@@ -1,5 +1,23 @@
 ---
-- name: Consul Cluster
+- name: Update apt lists
+  hosts: consul_instances
+  any_errors_fatal: true
+  become: true
+  become_user: root
+  tasks:
+    - name: Update apt lists
+      apt:
+        update_cache: true
+
+- name: Install pip
+  hosts: consul_instances
+  any_errors_fatal: true
+  become: true
+  become_user: root
+  roles:
+    - ansible-pip
+
+- name: Bootstrap consul cluster
   hosts: consul_instances
   any_errors_fatal: true
   become: true

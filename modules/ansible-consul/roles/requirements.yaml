@@ -3,3 +3,6 @@
   name: ansible-consul
   scm: git
   version: master
+
+- src: geerlingguy.pip
+  name: ansible-pip
