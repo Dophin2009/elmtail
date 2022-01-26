@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
     virtualbox.gui = false
 
     virtualbox.memory = 512
-    virtualbox.cpu = 1
+    virtualbox.cpus = 1
   end
 
   for i in 0..(NODE_COUNT - 1) do
