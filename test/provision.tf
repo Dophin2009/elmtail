@@ -10,6 +10,7 @@ locals {
         ansible_user                 = host.user
         ansible_ssh_private_key_file = host.private_key_file
         ansible_ssh_extra_args       = "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+        consul_client_address        = "0.0.0.0"
       }
     }
   ]
