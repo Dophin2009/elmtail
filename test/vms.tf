@@ -5,6 +5,7 @@ locals {
 
 resource "vagrant_vm" "cluster" {
   vagrantfile_dir = "."
+  get_ports       = true
   env = {
     VAGRANTFILE_HASH   = md5(file("./Vagrantfile")),
     VAGRANT_NODE_COUNT = local.nodes
