@@ -4,7 +4,7 @@ require './util.rb'
 
 Vagrant.configure("2") do |config|
   config.vm.box = "generic/ubuntu2004"
-  config.vm.network "private_network", type: "dhcp"
+  config.vm.network :private_network, type: "dhcp"
 
   config.vm.provider :libvirt do |libvirt|
     libvirt.memory = 512
