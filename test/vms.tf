@@ -18,7 +18,7 @@ module "cluster_ssh_keys" {
 
   filename             = "privkey${count.index}.rsa"
   file_permission      = "0600"
-  directory_permission = "0600"
+  directory_permission = "0700"
   content              = vagrant_vm.cluster.ssh_config[count.index].private_key
 }
 

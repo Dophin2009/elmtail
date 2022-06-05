@@ -2,7 +2,7 @@ locals {
   lnamespace = "${var.namespace}/provision"
 
   consul_hosts = [
-    for host in local.hosts :
+    for i, host in local.hosts :
     {
       hostname = host.host
       options = {
@@ -11,9 +11,12 @@ locals {
         ansible_ssh_private_key_file = host.private_key_file
         ansible_ssh_extra_args       = "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
         consul_client_address        = "0.0.0.0"
+        consul_node_role             = i == 0 ? "server" : "client"
+        consul_bootstrap_expect      = true
       }
     }
   ]
+
 }
 
 module "provision_consul" {
