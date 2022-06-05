@@ -1,6 +1,6 @@
 locals {
   namespace = "local/cluster"
-  nodes     = 1
+  nodes     = 2
 }
 
 resource "vagrant_vm" "cluster" {
