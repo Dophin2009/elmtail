@@ -12,7 +12,7 @@ locals {
         ansible_ssh_extra_args       = "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
         consul_client_address        = "0.0.0.0"
         consul_node_role             = i == 0 ? "server" : "client"
-        consul_bootstrap_expect      = true
+        consul_bootstrap_expect      = i == 0
       }
     }
   ]
