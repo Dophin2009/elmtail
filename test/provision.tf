@@ -14,6 +14,7 @@ locals {
     }
   ]
 
+  // TODO: RPC traffic encryption via TLS
   consul_hosts = [
     for i, host in local.ansible_hosts :
     {
@@ -27,6 +28,8 @@ locals {
     }
   ]
 
+  // TODO: Enable and install Docker via Ansible
+  // TODO: Secure traffic with TLS
   nomad_hosts = [
     for i, host in local.ansible_hosts :
     {
