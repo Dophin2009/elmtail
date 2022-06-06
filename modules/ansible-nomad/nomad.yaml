@@ -1,0 +1,11 @@
+---
+- name: Boostrap nomad cluster
+  hosts: nomad_instances
+  any_errors_fatal: true
+  become: true
+  become_user: root
+  roles:
+    - ansible-nomad
+  tasks:
+    - name: Start nomad
+      service: name=nomad state=started enabled=yes
