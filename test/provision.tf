@@ -26,7 +26,20 @@ locals {
       })
     }
   ]
+
+  nomad_hosts = [
+    for i, host in local.ansible_hosts :
+    {
+      hostname = host.hostname
+      options = merge(host.options, {
+        nomad_node_role        = i == 0 ? "server" : "client"
+        nomad_bootstrap_expect = 1
+        nomad_use_consul       = true
+      })
+    }
+  ]
 }
+
 module "provision_apt" {
   source = "../modules/ansible-apt-update"
 
@@ -50,5 +63,14 @@ module "provision_consul" {
 
   namespace = "${local.lnamespace}/consul"
   hosts     = local.consul_hosts
+  vars      = {}
+}
+
+module "provision-nomad" {
+  source     = "../modules/ansible-nomad"
+  depends_on = [module.provision_consul]
+
+  namespace = "${local.lnamespace}/nomad"
+  hosts     = local.nomad_hosts
   vars      = {}
 }
