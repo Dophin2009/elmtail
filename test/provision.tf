@@ -41,6 +41,24 @@ locals {
       })
     }
   ]
+
+  glusterfs_hosts = [
+    for i, host in local.ansible_hosts :
+    {
+      hostname = host.hostname
+      options  = host.options
+    }
+  ]
+
+  glusterfs_connection_ports = concat([22, 111, 2049, 24007, 24008, 38465, 38466], [for i, host in local.glusterfs_hosts : 49152 + i])
+  glusterfs_vars = {
+    firewall_allowed_tcp_ports = local.glusterfs_connection_ports
+    firewall_allowed_udp_ports = [111]
+
+    gluster_mount_dir  = "/mnt/gluster"
+    gluster_brick_dir  = "/srv/gluster/brick"
+    gluster_brick_name = "gluster"
+  }
 }
 
 module "provision_apt" {
@@ -69,11 +87,20 @@ module "provision_consul" {
   vars      = {}
 }
 
-module "provision-nomad" {
+module "provision_nomad" {
   source     = "../modules/ansible-nomad"
   depends_on = [module.provision_consul]
 
   namespace = "${local.lnamespace}/nomad"
   hosts     = local.nomad_hosts
   vars      = {}
+}
+
+module "provision_glusterfs" {
+  source     = "../modules/ansible-glusterfs"
+  depends_on = [module.provision_nomad]
+
+  namespace = "${local.lnamespace}/glusterfs"
+  hosts     = local.glusterfs_hosts
+  vars      = local.glusterfs_vars
 }
