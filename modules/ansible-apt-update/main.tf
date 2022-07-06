@@ -1,16 +1,16 @@
 locals {
   playbook = "${path.module}/apt.yaml"
 
-  inventory = {
+  inventory = yamlencode({
     instances = {
       hosts = var.hosts
       vars  = var.vars
     }
-  }
+  })
 }
 
 module "install" {
-  source     = "../ansible-playbook"
+  source = "../ansible-playbook"
 
   namespace = var.namespace
   inventory = local.inventory

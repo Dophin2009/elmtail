@@ -2,12 +2,12 @@ locals {
   requirements = "${path.module}/roles/requirements.yaml"
   playbook     = "${path.module}/consul.yaml"
 
-  inventory = {
+  inventory = yamlencode({
     consul_instances = {
       hosts = var.hosts
       vars  = var.vars
     }
-  }
+  })
 }
 
 module "roles" {

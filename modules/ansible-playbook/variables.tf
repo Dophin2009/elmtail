@@ -4,17 +4,11 @@ variable "namespace" {
 }
 
 variable "inventory" {
-  description = "Inventory file to use."
-  type = map(object({
-    hosts = list(object({
-      hostname = string
-      options  = map(any)
-    }))
-    vars = map(any)
-  }))
+  description = "Inventory file contents."
+  type = string 
 }
 
 variable "playbook" {
-  description = "Ansible playbook to play."
+  description = "Ansible playbook file name."
   type        = string
 }

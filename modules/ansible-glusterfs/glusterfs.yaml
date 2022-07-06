@@ -1,6 +1,6 @@
 ---
 - name: Bootstrap glusterfs
-  hosts: gluster
+  hosts: glusterfs
   any_errors_fatal: true
   become: true
   become_user: root
@@ -25,7 +25,7 @@
         name: "{{ gluster_brick_name }}"
         brick: "{{ gluster_brick_dir }}"
         replicas: "{{ gluster_replicas }}"
-        cluster: "{{ groups.gluster | join(',') }}"
+        cluster: "{{ groups.glusterfs | join(',') }}"
         host: "{{ inventory_hostname }}"
         force: true
       run_once: true

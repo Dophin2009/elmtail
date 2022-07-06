@@ -5,10 +5,7 @@ variable "namespace" {
 
 variable "hosts" {
   description = "Hosts to be used in the inventory file."
-  type = list(object({
-    hostname = string
-    options  = map(any)
-  }))
+  type = map(map(any))
 }
 
 variable "vars" {

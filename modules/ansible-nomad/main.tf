@@ -2,12 +2,12 @@ locals {
   requirements = "${path.module}/roles/requirements.yaml"
   playbook     = "${path.module}/nomad.yaml"
 
-  inventory = {
+  inventory = yamlencode({
     nomad_instances = {
       hosts = var.hosts
       vars  = var.vars
     }
-  }
+  })
 }
 
 module "roles" {

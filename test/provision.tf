@@ -14,47 +14,39 @@ locals {
     }
   ]
 
-  // TODO: RPC traffic encryption via TLS
-  consul_hosts = [
+  apt_pip_hosts = {
     for i, host in local.ansible_hosts :
-    {
-      hostname = host.hostname
-      options = merge(host.options, {
-        consul_client_address   = "0.0.0.0"
-        consul_node_role        = i == 0 ? "server" : "client"
-        consul_bootstrap_expect = i == 0
-        consul_connect_enabled  = true
-      })
-    }
-  ]
+    host.hostname => host.options
+  }
+
+  // TODO: RPC traffic encryption via TLS
+  consul_hosts = {
+    for i, host in local.ansible_hosts :
+    host.hostname => merge(host.options, {
+      consul_client_address   = "0.0.0.0"
+      consul_node_role        = i == 0 ? "server" : "client"
+      consul_bootstrap_expect = i == 0
+      consul_connect_enabled  = true
+    })
+  }
 
   // TODO: Enable and install Docker via Ansible
   // TODO: Secure traffic with TLS
-  nomad_hosts = [
+  nomad_hosts = {
     for i, host in local.ansible_hosts :
-    {
-      hostname = host.hostname
-      options = merge(host.options, {
-        nomad_node_role        = i == 0 ? "server" : "client"
-        nomad_bootstrap_expect = 1
-        nomad_use_consul       = true
-      })
-    }
-  ]
+    host.hostname => merge(host.options, {
+      nomad_node_role        = i == 0 ? "server" : "client"
+      nomad_bootstrap_expect = 1
+      nomad_use_consul       = true
+    })
+  }
 
-  glusterfs_hosts = [
+  glusterfs_hosts = {
     for i, host in local.ansible_hosts :
-    {
-      hostname = host.hostname
-      options  = host.options
-    }
-  ]
-
-  glusterfs_connection_ports = concat([22, 111, 2049, 24007, 24008, 38465, 38466], [for i, host in local.glusterfs_hosts : 49152 + i])
+    host.hostname => host.options
+  }
   glusterfs_vars = {
-    firewall_allowed_tcp_ports = local.glusterfs_connection_ports
-    firewall_allowed_udp_ports = [111]
-
+    gluster_replicas   = 2
     gluster_mount_dir  = "/mnt/gluster"
     gluster_brick_dir  = "/srv/gluster/brick"
     gluster_brick_name = "gluster"
@@ -65,7 +57,7 @@ module "provision_apt" {
   source = "../modules/ansible-apt-update"
 
   namespace = "${local.lnamespace}/apt"
-  hosts     = local.ansible_hosts
+  hosts     = local.apt_pip_hosts
   vars      = {}
 }
 
@@ -74,7 +66,7 @@ module "provision_pip" {
   depends_on = [module.provision_apt]
 
   namespace = "${local.lnamespace}/pip"
-  hosts     = local.ansible_hosts
+  hosts     = local.apt_pip_hosts
   vars      = {}
 }
 

@@ -2,12 +2,12 @@ locals {
   requirements = "${path.module}/roles/requirements.yaml"
   playbook     = "${path.module}/pip.yaml"
 
-  inventory = {
+  inventory = yamlencode({
     instances = {
       hosts = var.hosts
       vars  = var.vars
     }
-  }
+  })
 }
 
 module "roles" {
